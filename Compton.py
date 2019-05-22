@@ -23,7 +23,7 @@ t = 0
 rad_to_deg = pi/180
 
 r_constant = 0.05
-T = 180/ r_constant * dt
+T = 360/ r_constant
 f = 1/T
 Hit = 0 
 
