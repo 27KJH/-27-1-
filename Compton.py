@@ -4,15 +4,6 @@ Light  + Energy +> to static electron => weaker light (different PAJANG) + elect
 
 on the 
 """
-#Init ==================================
-
-Light = sphere(pos=vector(-1.5e9,0,0), radius=3e7, color=color.red, 
-                make_trail=True)
-
-Electron  = sphere(pos=vector(0,0,0), radius=3e7, color=color.yellow,
-                make_trail=True, interval=10, retain=50)
-
-
 #Constants ==================================
 c = 3e8
 h = 6.6e-34
@@ -21,43 +12,98 @@ me = 9.1e-31
 dt = 0.0001
 t = 0
 rad_to_deg = pi/180
+Hit = 0
 
-r_constant = 0.05
-T = 360/ r_constant
-f = 1/T
-Hit = 0 
+#Init ==================================
 
-wl = c/ f
+Light = sphere(pos=vector(-8e8,0,0), radius=1e7, color=color.red, 
+                make_trail=True)
+                
+f1 = 3e19
+wl1 = c/f1 #1e-8
+E1 = h* f1
+p_i = h/wl1
 
-print("T" + T+"__f" + f +"__wl" + wl + "__diff_wl" + diff_wl  )
+print( " Initial Energy = " + E1)
+print( " Initial Freq = " + f1)
+print( " Initial Wave Length = " + wl1)
+print( " Initial Momentum= " + p_i)
 
-#wl = h *c / E
+
+Electron  = sphere(pos=vector(0,0,0), radius=3e7, color=color.yellow,
+                make_trail=True)
+
+
 #Compton equation ==================================
 
-Theta = 30 *rad_to_deg
-Phi = 60* rad_to_deg
+Theta = -30 * rad_to_deg
+diff_wl =h/(me*c) * (1-cos(Theta))
 
-diff_wl =h/((me)*(c**2)) * (1-cos(Theta))
+print("Difference in Wave Length " + diff_wl)
+
+
+#After Hit =======================
+
+print("AfterHit =========================")
+print("AfterHit =========================")
+print("AfterHit =========================")
+
+wl2 = wl1 + diff_wl
+
+#Momentum BoZon ==================
+
+p_i = h/wl1
+p_f = h/wl2
+f2 = c/wl2
+E2 = h*f2
+
+
+Phi = atan(-p_f * sin(Theta) / (p_i-p_f*cos(Theta)))
+
+
+p_e = p_f * cos(Theta) / sin(Phi)
+v_e = sqrt( ( (c**2)*me + sqrt( (c**4)*(me**2) - (p_e * c) ** 2)) / 2*me)
+#NEEEDFCGHKYULIHGYKFJCGXHKYLUIYFKTHJCGXHKUYL
+E_e = sqrt( (p_e*c)**2 + (me *(c**2))**2 )
+
+
+Ediff = E_e + E2 - E1
+
+
+print("After Energy "+ E2)
+print("After Freq "+ f2)
+print("After Wave Length "+ wl2)
+print("After Momentum "+ p_f)
+
+
+print("Phi:  " + Phi)
+
+
+print("After Velocity "+ v_e)
 
 #Constants ==================================
 
-print("E = hf = "+h*f)
-print("init_wl = " + wl)
 while True:
     rate(10000)
     t = t + 1
-    Light.pos.x = Light.pos.x + c*dt
-    Light.pos.y = 3e8 * sin(r_constant*t * rad_to_deg)
-    if (Light.pos.x)**2 + (Light.pos.y)**2 <= Electron.radius ** 2 :
-        Hit = 1
-               
-if Hit ==1 :
-    print(diff_wl)
-    print(wl - diffwl)
+    if Hit ==0 : 
+        Light.pos.x = Light.pos.x + c*dt
+        Light.pos.y = 1e8 * sin(t / rad_to_deg)
+        if (Light.pos.x)**2 + (Light.pos.y)**2 <= Electron.radius ** 2 :
+            Hit = 1
+            Light.visible = False
+    if Hit == 1:
+        Electron.pos.x = Electron.pos.x + v_e*dt
+        
+
     
+        
+   
+              
     
                 
                 
                 
                 
+
 
