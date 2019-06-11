@@ -16,8 +16,7 @@ Hit = 0
 
 #Init ==================================
 
-Light = sphere(pos=vector(-8e8,0,0), radius=1e7, color=color.red, 
-                make_trail=True)
+Light = sphere(pos=vector(-8e8,0,0), radius=1e7, color=color.red, make_trail=True)
                 
 f1 = 3e19
 wl1 = c/f1 #1e-8
@@ -63,12 +62,10 @@ Phi = atan(-p_f * sin(Theta) / (p_i-p_f*cos(Theta)))
 
 p_e = p_f * cos(Theta) / sin(Phi)
 v_e = sqrt( ( (c**2)*me + sqrt( (c**4)*(me**2) - (p_e * c) ** 2)) / 2*me)
-#NEEEDFCGHKYULIHGYKFJCGXHKYLUIYFKTHJCGXHKUYL
 E_e = sqrt( (p_e*c)**2 + (me *(c**2))**2 )
 
 
 Ediff = E_e + E2 - E1
-
 
 print("After Energy "+ E2)
 print("After Freq "+ f2)
@@ -85,15 +82,20 @@ print("After Velocity "+ v_e)
 
 while True:
     rate(10000)
-    t = t + 1
-    if Hit ==0 : 
+    t += 1
+    if Hit == 0:
         Light.pos.x = Light.pos.x + c*dt
         Light.pos.y = 1e8 * sin(t / rad_to_deg)
         if (Light.pos.x)**2 + (Light.pos.y)**2 <= Electron.radius ** 2 :
-            Hit = 1
-            Light.visible = False
-    if Hit == 1:
-        Electron.pos.x = Electron.pos.x + v_e*dt
+            Hit = 1   
+    else: 
+        Light.pos.x = Light.pos.x + c* dt
+        Light.pos.y = 1e8*sin(t/rad_to_deg)
+        
+        Light.pos.y = -(Light.pos.x * sin(Theta) - Light.pos.y*cos(Theta))
+        
+        Electron.velocity = vector(v_e*3e29,v_e*3e29*tan(-Phi),0)
+        Electron.pos += Electron.velocity *dt 
         
 
     
