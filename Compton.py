@@ -16,7 +16,7 @@ Hit = 0
 
 #Init ==================================
 
-Light = sphere(pos=vector(-8e8,0,0), radius=1e7, color=color.red, make_trail=True)
+Light = sphere(pos=vector(-8e8,0,0), radius=2e7, color=color.red, make_trail=True)
                 
 f1 = 3e19
 wl1 = c/f1 #1e-8
@@ -29,7 +29,7 @@ print( " Initial Wave Length = " + wl1)
 print( " Initial Momentum= " + p_i)
 
 
-Electron  = sphere(pos=vector(0,0,0), radius=3e7, color=color.yellow,
+Electron  = sphere(pos=vector(0,0,0), radius=2e7, color=color.yellow,
                 make_trail=True)
 
 
@@ -75,12 +75,9 @@ print("After Momentum "+ p_f)
 
 print("Phi:  " + Phi)
 
-
-print("After Velocity "+ v_e)
-
 #Constants ==================================
 
-while True:
+while t<=4e4:
     rate(10000)
     t += 1
     if Hit == 0:
@@ -89,17 +86,17 @@ while True:
         if (Light.pos.x)**2 + (Light.pos.y)**2 <= Electron.radius ** 2 :
             Hit = 1   
     else: 
-        Light.pos.x = Light.pos.x + c* dt
+        Light.pos.x = Light.pos.x + c*2* dt
         Light.pos.y = 1e8*sin(t/rad_to_deg)
         
         Light.pos.y = -(Light.pos.x * sin(Theta) - Light.pos.y*cos(Theta))
         
-        Electron.velocity = vector(v_e*3e29,v_e*3e29*tan(-Phi),0)
+        Electron.velocity = vector(v_e*6e29,v_e*6e29*tan(-Phi),0)
         Electron.pos += Electron.velocity *dt 
         
 
     
-        
+    
    
               
     
